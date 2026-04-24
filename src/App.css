@@ -184,7 +184,7 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  padding: 16px;
+  padding: 0;
 }
 
 
@@ -196,10 +196,8 @@
   flex: 1;
   min-height: 0;
   position: relative;
-  border-radius: 8px;
   overflow: hidden;
   background: #000;
-  border: 1px solid #000;
 }
 
 /* ── Desktop ─────────────────────────────────────────────────────────────── */
@@ -233,12 +231,11 @@
 
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
 /* Container clips overflow so the phone stays fully within the black box.
-   The iframe is centred horizontally and scaled down via JS to fit.
-   transform-origin: top center keeps the phone anchored to the top edge. */
+   The iframe is centred both axes and scaled via JS to fit. */
 .embedChrome--mobile {
   overflow: hidden;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
 }
 
@@ -247,7 +244,7 @@
   flex-shrink: 0;
   border: none;
   background: #000;
-  transform-origin: top center;
+  transform-origin: center center;
 }
 
 /* Hide Figma's prototype navigation arrows (bottom-center) in the mobile embed */

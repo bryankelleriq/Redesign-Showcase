@@ -30,7 +30,7 @@ function Showcase() {
     if (!container || breakpoint !== 'mobile') return
     const observer = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect
-      setMobileScale(Math.min(width / MOBILE_W, height / MOBILE_H, 1))
+      setMobileScale(Math.min(width / MOBILE_W, height / MOBILE_H))
     })
     observer.observe(container)
     return () => observer.disconnect()
