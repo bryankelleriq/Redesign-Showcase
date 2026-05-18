@@ -490,6 +490,28 @@
   align-items: center;
 }
 
+.manage__moveBtn {
+  flex-shrink: 0;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 0.8125rem;
+  background: #fff;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.manage__moveBtn:hover:not(:disabled) {
+  border-color: #9ca3af;
+  color: #232323;
+}
+
+.manage__moveBtn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
 .manage__editBtn {
   flex-shrink: 0;
   border: 1px solid #d1d5db;

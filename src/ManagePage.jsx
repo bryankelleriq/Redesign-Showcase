@@ -23,7 +23,7 @@ function validateFields(fields) {
   return errs
 }
 
-function ProjectRow({ p, onUpdate, onRemove }) {
+function ProjectRow({ p, onUpdate, onRemove, onMoveUp, onMoveDown }) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState({ title: p.title, protoDesktop: p.protoDesktop, protoMobile: p.protoMobile })
   const [errors, setErrors] = useState({})
@@ -85,6 +85,8 @@ function ProjectRow({ p, onUpdate, onRemove }) {
         <span className="manage__rowUrl" title={p.protoMobile}>Mobile: {p.protoMobile}</span>
       </div>
       <div className="manage__rowActions">
+        <button type="button" className="manage__moveBtn" onClick={onMoveUp} disabled={!onMoveUp} aria-label={`Move ${p.title} up`}>↑</button>
+        <button type="button" className="manage__moveBtn" onClick={onMoveDown} disabled={!onMoveDown} aria-label={`Move ${p.title} down`}>↓</button>
         <button type="button" className="manage__editBtn" onClick={() => setEditing(true)} aria-label={`Edit ${p.title}`}>Edit</button>
         <button type="button" className="manage__removeBtn" onClick={() => onRemove(p.id)} aria-label={`Remove ${p.title}`}>Remove</button>
       </div>
@@ -92,7 +94,7 @@ function ProjectRow({ p, onUpdate, onRemove }) {
   )
 }
 
-export default function ManagePage({ rawList, addProject, updateProject, removeProject, resetProjects }) {
+export default function ManagePage({ rawList, addProject, updateProject, moveProject, removeProject, resetProjects }) {
   const [form, setForm] = useState(EMPTY_FORM)
   const [errors, setErrors] = useState({})
   const [confirmReset, setConfirmReset] = useState(false)
@@ -142,8 +144,15 @@ export default function ManagePage({ rawList, addProject, updateProject, removeP
           )}
 
           <ul className="manage__list">
-            {rawList.map((p) => (
-              <ProjectRow key={p.id} p={p} onUpdate={updateProject} onRemove={removeProject} />
+            {rawList.map((p, i) => (
+              <ProjectRow
+                key={p.id}
+                p={p}
+                onUpdate={updateProject}
+                onRemove={removeProject}
+                onMoveUp={i > 0 ? () => moveProject(p.id, 'up') : null}
+                onMoveDown={i < rawList.length - 1 ? () => moveProject(p.id, 'down') : null}
+              />
             ))}
           </ul>
         </section>

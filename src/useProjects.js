@@ -77,6 +77,19 @@ export function useProjects() {
     [rawList, update],
   )
 
+  const moveProject = useCallback(
+    (id, direction) => {
+      const idx = rawList.findIndex((p) => p.id === id)
+      if (idx === -1) return
+      const newIdx = direction === 'up' ? idx - 1 : idx + 1
+      if (newIdx < 0 || newIdx >= rawList.length) return
+      const newList = [...rawList]
+      ;[newList[idx], newList[newIdx]] = [newList[newIdx], newList[idx]]
+      update(newList)
+    },
+    [rawList, update],
+  )
+
   const resetProjects = useCallback(
     () => update(RAW_PROJECTS),
     [update],
@@ -88,6 +101,7 @@ export function useProjects() {
     loading,
     addProject,
     updateProject,
+    moveProject,
     removeProject,
     resetProjects,
   }
