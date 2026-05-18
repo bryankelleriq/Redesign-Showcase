@@ -1,8 +1,6 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toEmbedUrl } from './figma.js'
 import { RAW_PROJECTS } from './projects.js'
-
-const STORAGE_KEY = 'iq-showcase-projects'
 
 /** Attach computed embed URLs to a raw project list. */
 function withEmbeds(rawList) {
@@ -11,18 +9,6 @@ function withEmbeds(rawList) {
     embedDesktop: toEmbedUrl(p.protoDesktop, 'desktop'),
     embedMobile: toEmbedUrl(p.protoMobile, 'mobile'),
   }))
-}
-
-function loadRaw() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) return JSON.parse(stored)
-  } catch {}
-  return RAW_PROJECTS
-}
-
-function persist(list) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(list))
 }
 
 /** Slugify a title into a stable id, e.g. "Laurel Road Redesign" → "laurel-road-redesign" */
@@ -35,16 +21,44 @@ export function toId(title) {
     .replace(/-+/g, '-')
 }
 
+async function apiFetch() {
+  const res = await fetch('/api/projects')
+  if (!res.ok) throw new Error('Failed to fetch projects')
+  return res.json()
+}
+
+async function apiSave(list) {
+  const res = await fetch('/api/projects', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(list),
+  })
+  if (!res.ok) throw new Error('Failed to save projects')
+}
+
 /**
- * Hook that exposes the project list backed by localStorage.
- * Falls back to the hardcoded RAW_PROJECTS when localStorage is empty.
+ * Hook that exposes the project list backed by the server API.
+ * Falls back to the hardcoded RAW_PROJECTS if the API is unreachable.
  */
 export function useProjects() {
-  const [rawList, setRawList] = useState(loadRaw)
+  // Start with defaults so the UI renders immediately on first paint
+  const [rawList, setRawList] = useState(RAW_PROJECTS)
+  const [loading, setLoading] = useState(true)
 
-  const update = useCallback((newList) => {
-    persist(newList)
+  useEffect(() => {
+    apiFetch()
+      .then(setRawList)
+      .catch((err) => console.warn('Could not load projects from server, using defaults.', err))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const update = useCallback(async (newList) => {
     setRawList(newList)
+    try {
+      await apiSave(newList)
+    } catch (err) {
+      console.error('Failed to save projects to server:', err)
+    }
   }, [])
 
   const addProject = useCallback(
@@ -57,21 +71,21 @@ export function useProjects() {
     [rawList, update],
   )
 
-  /** Reset to the built-in project list and clear localStorage. */
   const updateProject = useCallback(
     (id, changes) =>
       update(rawList.map((p) => (p.id === id ? { ...p, ...changes } : p))),
     [rawList, update],
   )
 
-  const resetProjects = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEY)
-    setRawList(RAW_PROJECTS)
-  }, [])
+  const resetProjects = useCallback(
+    () => update(RAW_PROJECTS),
+    [update],
+  )
 
   return {
     projects: withEmbeds(rawList),
     rawList,
+    loading,
     addProject,
     updateProject,
     removeProject,

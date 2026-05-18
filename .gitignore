@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Runtime data (edited via /manage — not tracked in git)
+data/projects.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
