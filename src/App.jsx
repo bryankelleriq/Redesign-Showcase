@@ -42,8 +42,7 @@ function Showcase() {
   )
 
   const embedSrc =
-    breakpoint === 'mobile' ? project.embedMobile : project.embedDesktop
-
+    breakpoint === 'mobile' ? project?.embedMobile : project?.embedDesktop
 
   return (
     <div className="shell">

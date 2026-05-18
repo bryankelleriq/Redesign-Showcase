@@ -308,7 +308,8 @@
 /* ── Manage page ─────────────────────────────────────────────────────────── */
 
 .managePage {
-  min-height: 100svh;
+  height: 100%;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   background: #f4f5f7;
