@@ -13,8 +13,14 @@
   },
   {
     "id": "ogle-school",
-    "title": "Ogle School",
+    "title": "Ogle School Redesign",
     "protoDesktop": "https://www.figma.com/proto/tH3lU9nfOle4F7wxywpbY4/Redesign-Example-Screens?node-id=710-5377&viewport=-64%2C196%2C0.1&t=gdLNaLbwYQy7IYMW-1&scaling=min-zoom&content-scaling=fixed&page-id=20%3A14109",
     "protoMobile": "https://www.figma.com/proto/tH3lU9nfOle4F7wxywpbY4/Redesign-Example-Screens?node-id=710-19042&viewport=790%2C126%2C0.54&t=va2zUyluEwPBMcm1-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1"
+  },
+  {
+    "id": "jefferson-bourbon-redesign",
+    "title": "Jefferson Bourbon Redesign",
+    "protoDesktop": "https://www.figma.com/proto/tH3lU9nfOle4F7wxywpbY4/Redesign-Example-Screens?node-id=119-23011&viewport=8%2C287%2C0.09&t=VVd8HN67Yrx7kbLy-1&scaling=min-zoom&content-scaling=fixed&page-id=20%3A14109",
+    "protoMobile": "https://www.figma.com/proto/tH3lU9nfOle4F7wxywpbY4/Redesign-Example-Screens?node-id=119-23597&viewport=665%2C162%2C0.23&t=53d5E1OcyvRoXwlL-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1"
   }
 ]
