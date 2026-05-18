@@ -23,6 +23,14 @@ export const RAW_PROJECTS = [
     protoMobile:
       'https://www.figma.com/proto/tH3lU9nfOle4F7wxywpbY4/Redesign-Example-Screens?node-id=1-15921&viewport=655%2C124%2C0.18&t=GVvA0S2klk3AeOFP-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1',
   },
+  {
+    id: 'ogle-school',
+    title: 'Ogle School',
+    protoDesktop:
+      'https://www.figma.com/proto/tH3lU9nfOle4F7wxywpbY4/Redesign-Example-Screens?node-id=710-5377&viewport=-64%2C196%2C0.1&t=gdLNaLbwYQy7IYMW-1&scaling=min-zoom&content-scaling=fixed&page-id=20%3A14109',
+    protoMobile:
+      'https://www.figma.com/proto/tH3lU9nfOle4F7wxywpbY4/Redesign-Example-Screens?node-id=710-19042&viewport=790%2C126%2C0.54&t=va2zUyluEwPBMcm1-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1',
+  },
 ]
 
 /**
