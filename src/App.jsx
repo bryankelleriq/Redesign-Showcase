@@ -14,7 +14,7 @@ const LOGO_URL =
 
 function Showcase() {
   const { projects, rawList, addProject, removeProject, resetProjects } = useProjects()
-  const [projectId, setProjectId] = useState(() => projects[0]?.id)
+  const [projectId, setProjectId] = useState(null)
   const [breakpoint, setBreakpoint] = useState('desktop')
   const [navCollapsed, setNavCollapsed] = useState(true)
 
@@ -128,9 +128,9 @@ function Showcase() {
               <button
                 key={p.id}
                 type="button"
-                className={`sidebar__item ${p.id === projectId ? 'sidebar__item--active' : ''}`}
+                className={`sidebar__item ${p.id === project?.id ? 'sidebar__item--active' : ''}`}
                 onClick={() => { setProjectId(p.id); setNavCollapsed(true) }}
-                aria-current={p.id === projectId ? 'page' : undefined}
+                aria-current={p.id === project?.id ? 'page' : undefined}
                 aria-label={navCollapsed ? p.title : undefined}
                 title={navCollapsed ? p.title : undefined}
               >
@@ -149,11 +149,10 @@ function Showcase() {
 }
 
 export default function App() {
-  const manageProps = useProjects()
   return (
     <Routes>
       <Route path="/" element={<Showcase />} />
-      <Route path="/manage" element={<ManagePage {...manageProps} />} />
+      <Route path="/manage" element={<ManagePage />} />
     </Routes>
   )
 }

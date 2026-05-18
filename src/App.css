@@ -339,6 +339,52 @@
   gap: 32px;
 }
 
+.manage__headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.manage__saveError {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+}
+
+.login {
+  max-width: 380px;
+  width: 100%;
+  margin: 80px auto 0;
+  padding: 0 24px;
+}
+
+.login__form {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.login__title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: #232323;
+}
+
+.login__error {
+  color: #b91c1c;
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
 .manage__section {
   background: #fff;
   border: 1px solid #e2e4e8;

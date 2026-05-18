@@ -21,45 +21,80 @@ export function toId(title) {
     .replace(/-+/g, '-')
 }
 
-async function apiFetch() {
+function basicAuthHeader(user, pass) {
+  return `Basic ${btoa(`${user}:${pass}`)}`
+}
+
+async function apiFetchProjects() {
   const res = await fetch('/api/projects')
   if (!res.ok) throw new Error('Failed to fetch projects')
   return res.json()
 }
 
-async function apiSave(list) {
+async function apiSaveProjects(list, authHeader) {
+  const headers = { 'Content-Type': 'application/json' }
+  if (authHeader) headers.Authorization = authHeader
   const res = await fetch('/api/projects', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify(list),
   })
+  if (res.status === 401) {
+    const err = new Error('Unauthorized')
+    err.status = 401
+    throw err
+  }
   if (!res.ok) throw new Error('Failed to save projects')
+}
+
+/** Verify credentials against the server. Returns true on success. */
+export async function verifyCredentials(user, pass) {
+  const res = await fetch('/api/auth/check', {
+    headers: { Authorization: basicAuthHeader(user, pass) },
+  })
+  return res.ok
+}
+
+/** Check whether the server requires auth for writes. */
+export async function fetchAuthStatus() {
+  try {
+    const res = await fetch('/api/auth/status')
+    if (!res.ok) return { authRequired: false }
+    return res.json()
+  } catch {
+    return { authRequired: false }
+  }
 }
 
 /**
  * Hook that exposes the project list backed by the server API.
- * Falls back to the hardcoded RAW_PROJECTS if the API is unreachable.
+ * Pass an Authorization header value (or null) for writes to be authenticated.
  */
-export function useProjects() {
-  // Start with defaults so the UI renders immediately on first paint
+export function useProjects(authHeader = null) {
   const [rawList, setRawList] = useState(RAW_PROJECTS)
   const [loading, setLoading] = useState(true)
+  const [saveError, setSaveError] = useState(null)
 
   useEffect(() => {
-    apiFetch()
+    apiFetchProjects()
       .then(setRawList)
       .catch((err) => console.warn('Could not load projects from server, using defaults.', err))
       .finally(() => setLoading(false))
   }, [])
 
-  const update = useCallback(async (newList) => {
-    setRawList(newList)
-    try {
-      await apiSave(newList)
-    } catch (err) {
-      console.error('Failed to save projects to server:', err)
-    }
-  }, [])
+  const update = useCallback(
+    async (newList) => {
+      setRawList(newList)
+      setSaveError(null)
+      try {
+        await apiSaveProjects(newList, authHeader)
+      } catch (err) {
+        console.error('Failed to save projects to server:', err)
+        setSaveError(err)
+      }
+    },
+    [authHeader],
+  )
 
   const addProject = useCallback(
     (raw) => update([...rawList, raw]),
@@ -99,6 +134,7 @@ export function useProjects() {
     projects: withEmbeds(rawList),
     rawList,
     loading,
+    saveError,
     addProject,
     updateProject,
     moveProject,
@@ -106,3 +142,6 @@ export function useProjects() {
     resetProjects,
   }
 }
+
+/** Build a Basic Auth header value from a username/password pair. */
+export { basicAuthHeader }
