@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import ManagePage from './ManagePage.jsx'
 import { useProjects } from './useProjects.js'
 import './App.css'
@@ -83,7 +83,6 @@ function Showcase() {
             Mobile
           </button>
         </div>
-        <Link to="/manage" className="manage__backLink">Manage Projects</Link>
       </header>
 
       <div className="body">
